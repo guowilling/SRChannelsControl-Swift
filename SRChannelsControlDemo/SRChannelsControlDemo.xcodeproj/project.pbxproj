@@ -10,7 +10,6 @@
 		6800AE5D1F39B57400194040 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6800AE5C1F39B57400194040 /* AppDelegate.swift */; };
 		6800AE621F39B57400194040 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6800AE601F39B57400194040 /* Main.storyboard */; };
 		6800AE641F39B57400194040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6800AE631F39B57400194040 /* Assets.xcassets */; };
-		6800AE671F39B57400194040 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6800AE651F39B57400194040 /* LaunchScreen.storyboard */; };
 		6800AE711F39B64A00194040 /* SRChannelsControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6800AE701F39B64A00194040 /* SRChannelsControl.swift */; };
 		6800AE731F39B68300194040 /* SRChannelsTitleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6800AE721F39B68300194040 /* SRChannelsTitleStyle.swift */; };
 		6800AE751F39B6AB00194040 /* SRChannelsTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6800AE741F39B6AB00194040 /* SRChannelsTitle.swift */; };
@@ -18,6 +17,7 @@
 		6800AE791F39B9A500194040 /* UIColor+SRChannelsControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6800AE781F39B9A500194040 /* UIColor+SRChannelsControl.swift */; };
 		68325D0E1F4414A7008C52F8 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68325D0D1F4414A7008C52F8 /* TestViewController.swift */; };
 		68325D101F4414C4008C52F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68325D0F1F4414C4008C52F8 /* ViewController.swift */; };
+		688BFF501F5FFBC50039E524 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 688BFF4F1F5FFBC50039E524 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +25,6 @@
 		6800AE5C1F39B57400194040 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6800AE611F39B57400194040 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6800AE631F39B57400194040 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		6800AE661F39B57400194040 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6800AE681F39B57400194040 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6800AE701F39B64A00194040 /* SRChannelsControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRChannelsControl.swift; sourceTree = "<group>"; };
 		6800AE721F39B68300194040 /* SRChannelsTitleStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRChannelsTitleStyle.swift; sourceTree = "<group>"; };
@@ -34,6 +33,7 @@
 		6800AE781F39B9A500194040 /* UIColor+SRChannelsControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+SRChannelsControl.swift"; sourceTree = "<group>"; };
 		68325D0D1F4414A7008C52F8 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		68325D0F1F4414C4008C52F8 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		688BFF4F1F5FFBC50039E524 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +72,7 @@
 				68325D0D1F4414A7008C52F8 /* TestViewController.swift */,
 				6800AE601F39B57400194040 /* Main.storyboard */,
 				6800AE631F39B57400194040 /* Assets.xcassets */,
-				6800AE651F39B57400194040 /* LaunchScreen.storyboard */,
+				688BFF4F1F5FFBC50039E524 /* LaunchScreen.storyboard */,
 				6800AE681F39B57400194040 /* Info.plist */,
 			);
 			path = SRChannelsControlDemo;
@@ -151,7 +151,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6800AE671F39B57400194040 /* LaunchScreen.storyboard in Resources */,
+				688BFF501F5FFBC50039E524 /* LaunchScreen.storyboard in Resources */,
 				6800AE641F39B57400194040 /* Assets.xcassets in Resources */,
 				6800AE621F39B57400194040 /* Main.storyboard in Resources */,
 			);
@@ -184,14 +184,6 @@
 				6800AE611F39B57400194040 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		6800AE651F39B57400194040 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6800AE661F39B57400194040 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

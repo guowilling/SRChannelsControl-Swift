@@ -241,11 +241,11 @@ extension SRChannelsTitle {
     }
     
     public func didEndScrollAtIndex(atIndex: Int) {
-        currentIndex = atIndex
         let lastLabel = titleLabels[currentIndex]
         let atLabel = titleLabels[atIndex]
         lastLabel.textColor = titleStyle.titleNormalColor
         atLabel.textColor = titleStyle.titleSelectdColor
+        currentIndex = atIndex
         adjustPosition(atLabel)
     }
     
