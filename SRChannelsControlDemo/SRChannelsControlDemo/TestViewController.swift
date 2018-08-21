@@ -25,6 +25,7 @@ class TestViewController: UIViewController {
         super.viewDidLoad()
         
         automaticallyAdjustsScrollViewInsets = false
+        
         view.backgroundColor = UIColor.white
         
         var titles: [String]
@@ -33,18 +34,14 @@ class TestViewController: UIViewController {
         } else {
             titles = ["Title1", "Title2", "Title3", "Title4", "Title5"]
         }
-        
         let pageViewFrame = CGRect(x: 0, y: 64, width: view.bounds.width, height: view.bounds.height - 64)
-        
         var childVCs = [UIViewController]()
         for _ in 0..<titles.count {
             let vc = UIViewController()
             vc.view.backgroundColor = UIColor.randomColor()
             childVCs.append(vc)
         }
-        
         let channelsControl = SRChannelsControl(frame: pageViewFrame, titles: titles, titleStyle: titleStyle, childVCs: childVCs, parentVC: self)
         view.addSubview(channelsControl)
     }
-
 }

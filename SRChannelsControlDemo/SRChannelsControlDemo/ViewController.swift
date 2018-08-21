@@ -47,5 +47,4 @@ class ViewController: UITableViewController {
         }
         navigationController?.pushViewController(TestViewController.init(titleStyle: titleStyle), animated: true)
     }
-
 }

@@ -11,7 +11,6 @@ import UIKit
 protocol SRChannelsTitleDeleate : class {
     
     func channelsTitle(_ channelsTitle: SRChannelsTitle, didSelectIndex index: Int)
-    
 }
 
 class SRChannelsTitle: UIView {
@@ -47,16 +46,13 @@ class SRChannelsTitle: UIView {
     init(frame: CGRect, titles: [String], titleStyle: SRChannelsTitleStyle) {
         self.titles = titles
         self.titleStyle = titleStyle
-        
         super.init(frame: frame)
-        
         setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 extension SRChannelsTitle {
@@ -65,7 +61,6 @@ extension SRChannelsTitle {
         backgroundColor = UIColor.white
         addSubview(scrollView)
         setupTitleLabels()
-        setupTitleLabelsFrame()
         setupBottomLine()
         setupSlider()
     }
@@ -84,6 +79,7 @@ extension SRChannelsTitle {
             scrollView.addSubview(titleLabel)
             titleLabels.append(titleLabel)
         }
+        setupTitleLabelsFrame()
     }
     
     private func setupTitleLabelsFrame() {
@@ -147,7 +143,6 @@ extension SRChannelsTitle {
         slider.layer.masksToBounds = true
         scrollView.addSubview(slider)
     }
-    
 }
 
 extension SRChannelsTitle {
@@ -189,7 +184,6 @@ extension SRChannelsTitle {
         
         adjustPosition(currentLabel)
     }
-    
 }
 
 extension SRChannelsTitle {
@@ -263,5 +257,4 @@ extension SRChannelsTitle {
         }
         scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
     }
-    
 }

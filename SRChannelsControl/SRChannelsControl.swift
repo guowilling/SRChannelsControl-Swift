@@ -14,7 +14,6 @@ class SRChannelsControl: UIView {
     fileprivate var titleStyle: SRChannelsTitleStyle
     fileprivate var childVCs: [UIViewController]
     fileprivate var parentVC: UIViewController
-    
     fileprivate var channelsTitle: SRChannelsTitle!
     fileprivate var channelsContent: SRChannelsContent!
     
@@ -23,16 +22,13 @@ class SRChannelsControl: UIView {
         self.titleStyle = titleStyle
         self.childVCs = childVCs
         self.parentVC = parentVC
-        
         super.init(frame: frame)
-        
         self.setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 extension SRChannelsControl {
@@ -48,7 +44,6 @@ extension SRChannelsControl {
         channelsContent.delegate = self
         addSubview(channelsContent)
     }
-    
 }
 
 extension SRChannelsControl: SRChannelsContentDelegate {
@@ -60,7 +55,6 @@ extension SRChannelsControl: SRChannelsContentDelegate {
     func channelsContent(_ channelsContent: SRChannelsContent, didEndScrollAtIndex atIndex: Int) {
         channelsTitle.didEndScrollAtIndex(atIndex: atIndex)
     }
-    
 }
 
 extension SRChannelsControl: SRChannelsTitleDeleate {
@@ -68,5 +62,4 @@ extension SRChannelsControl: SRChannelsTitleDeleate {
     func channelsTitle(_ channelsTitle: SRChannelsTitle, didSelectIndex index: Int) {
         channelsContent.didSelectIndex(index: index)
     }
-    
 }

@@ -26,5 +26,4 @@ extension UIColor {
         }
         return (components[0] * 255, components[1] * 255, components[2] * 255)
     }
-    
 }

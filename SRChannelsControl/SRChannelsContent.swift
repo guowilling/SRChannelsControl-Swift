@@ -12,7 +12,6 @@ protocol SRChannelsContentDelegate : class {
     
     func channelsContent(_ channelsContent: SRChannelsContent, scrollFromIndex fromIndex: Int, toIndex:Int, progress: CGFloat)
     func channelsContent(_ channelsContent: SRChannelsContent, didEndScrollAtIndex atIndex : Int)
-    
 }
 
 fileprivate let kContentCellID = "kContentCellID"
@@ -47,16 +46,13 @@ class SRChannelsContent: UIView {
     init(frame: CGRect, childVCs: [UIViewController], parentVC: UIViewController) {
         self.childVCs = childVCs
         self.parentVC = parentVC
-        
         super.init(frame: frame)
-        
         setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 extension SRChannelsContent {
@@ -67,7 +63,6 @@ extension SRChannelsContent {
         }
         addSubview(collectionView)
     }
-    
 }
 
 extension SRChannelsContent: UICollectionViewDataSource {
@@ -81,12 +76,11 @@ extension SRChannelsContent: UICollectionViewDataSource {
         for subview in cell.contentView.subviews {
             subview.removeFromSuperview()
         }
-        let vc = childVCs[indexPath.item]
-        vc.view.frame = cell.contentView.bounds
-        cell.contentView.addSubview(vc.view)
+        let childVC = childVCs[indexPath.item]
+        childVC.view.frame = cell.contentView.bounds
+        cell.contentView.addSubview(childVC.view)
         return cell
     }
-    
 }
 
 extension SRChannelsContent: UICollectionViewDelegate {
@@ -97,6 +91,9 @@ extension SRChannelsContent: UICollectionViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if disableScroll {
+            return
+        }
         let floorIndex = Int(floorf(Float(scrollView.contentOffset.x / scrollView.frame.size.width)))
         if floorIndex < 0 || floorIndex > childVCs.count - 1 {
             return;
@@ -128,7 +125,6 @@ extension SRChannelsContent: UICollectionViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         collectionViewEndScroll()
     }
-    
 }
 
 extension SRChannelsContent {
@@ -137,7 +133,6 @@ extension SRChannelsContent {
         let atIndex = Int(collectionView.contentOffset.x / collectionView.bounds.width)
         delegate?.channelsContent(self, didEndScrollAtIndex: atIndex)
     }
-    
 }
 
 extension SRChannelsContent {

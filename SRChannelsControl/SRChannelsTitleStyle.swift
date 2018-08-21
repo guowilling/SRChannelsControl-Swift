@@ -30,5 +30,4 @@ class SRChannelsTitleStyle {
     var sliderAlpha: CGFloat = 0.1
     var sliderHeight: CGFloat = 25
     var sliderInset: CGFloat = 10
-    
 }
