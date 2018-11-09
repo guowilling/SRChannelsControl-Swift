@@ -1,10 +1,3 @@
-//
-//  SRChannelsTitleStyle.swift
-//  SRChannelsControlDemo
-//
-//  Created by https://github.com/guowilling on 2017/8/8.
-//  Copyright © 2017年 SR. All rights reserved.
-//
 
 import UIKit
 
@@ -15,8 +8,8 @@ class SRChannelsTitleStyle {
     var titleHeight: CGFloat = 44
     var titleMargin: CGFloat = 20
     var titleFont: UIFont = UIFont.systemFont(ofSize: 15.0)
-    var titleNormalColor: UIColor = UIColor(colorWithR: 0, G: 0, B: 0)
-    var titleSelectdColor: UIColor = UIColor(colorWithR: 255, G: 0, B: 0)
+    var titleNormalColor: UIColor = UIColor(sr_colorWithR: 0, G: 0, B: 0)
+    var titleSelectdColor: UIColor = UIColor(sr_colorWithR: 255, G: 0, B: 0)
     
     var isTitleScaling: Bool = false
     var scaleRange: CGFloat = 1.2

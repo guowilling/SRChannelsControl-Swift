@@ -1,20 +1,12 @@
-//
-//  SRChannelsTitle.swift
-//  SRChannelsControlDemo
-//
-//  Created by https://github.com/guowilling on 2017/8/8.
-//  Copyright © 2017年 SR. All rights reserved.
-//
 
 import UIKit
 
-protocol SRChannelsTitleDeleate : class {
-    
+protocol SRChannelsTitleDeleate: class {
     func channelsTitle(_ channelsTitle: SRChannelsTitle, didSelectIndex index: Int)
 }
 
 class SRChannelsTitle: UIView {
-
+    
     weak var delegate: SRChannelsTitleDeleate?
     
     public var titles: [String]
@@ -23,30 +15,32 @@ class SRChannelsTitle: UIView {
     public var currentIndex: Int = 0
     
     fileprivate lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView(frame: self.bounds)
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.scrollsToTop = false
-        return scrollView
+        let sv = UIScrollView(frame: self.bounds)
+        sv.showsHorizontalScrollIndicator = false
+        sv.scrollsToTop = false
+        return sv
     }()
     
     public lazy var bottomLine: UIView = {
-        let bottomLine = UIView()
-        bottomLine.backgroundColor = self.titleStyle.bottomLineColor
-        bottomLine.frame.size.height = self.titleStyle.bottomLineHeight
-        return bottomLine
+        let v = UIView()
+        v.backgroundColor = self.titleStyle.bottomLineColor
+        v.frame.size.height = self.titleStyle.bottomLineHeight
+        return v
     }()
     
     public lazy var slider: UIView = {
-        let slider = UIView()
-        slider.backgroundColor = self.titleStyle.sliderColor
-        slider.alpha = self.titleStyle.sliderAlpha
-        return slider
+        let v = UIView()
+        v.backgroundColor = self.titleStyle.sliderColor
+        v.alpha = self.titleStyle.sliderAlpha
+        return v
     }()
     
     init(frame: CGRect, titles: [String], titleStyle: SRChannelsTitleStyle) {
         self.titles = titles
         self.titleStyle = titleStyle
+        
         super.init(frame: frame)
+        
         setupUI()
     }
     
@@ -67,44 +61,41 @@ extension SRChannelsTitle {
     
     private func setupTitleLabels() {
         for (i, title) in titles.enumerated() {
-            let titleLabel = UILabel()
-            titleLabel.text = title
-            titleLabel.tag = i
-            titleLabel.font = titleStyle.titleFont
-            titleLabel.textColor = i == 0 ? titleStyle.titleSelectdColor : titleStyle.titleNormalColor
-            titleLabel.textAlignment = .center
+            let lb = UILabel()
+            lb.text = title
+            lb.tag = i
+            lb.font = titleStyle.titleFont
+            lb.textColor = i == 0 ? titleStyle.titleSelectdColor : titleStyle.titleNormalColor
+            lb.textAlignment = .center
             let tapGes = UITapGestureRecognizer(target: self, action: #selector(didTapTitleLabel(_:)))
-            titleLabel.isUserInteractionEnabled = true
-            titleLabel.addGestureRecognizer(tapGes)
-            scrollView.addSubview(titleLabel)
-            titleLabels.append(titleLabel)
+            lb.isUserInteractionEnabled = true
+            lb.addGestureRecognizer(tapGes)
+            scrollView.addSubview(lb)
+            titleLabels.append(lb)
         }
-        setupTitleLabelsFrame()
-    }
-    
-    private func setupTitleLabelsFrame() {
+        
         let count = titles.count
         for (i, label) in titleLabels.enumerated() {
-            var labelX: CGFloat = 0
-            let labelY: CGFloat = 0
-            var labelW: CGFloat = 0
-            let labelH: CGFloat = bounds.height
+            var lbX: CGFloat = 0
+            let lbY: CGFloat = 0
+            var lbW: CGFloat = 0
+            let lbH: CGFloat = bounds.height
             if !titleStyle.isScrollEnabled {
-                labelW = bounds.width / CGFloat(count)
-                labelX = labelW * CGFloat(i)
+                lbW = bounds.width / CGFloat(count)
+                lbX = lbW * CGFloat(i)
             } else {
-                labelW = (titles[i] as NSString).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 0),
+                lbW = (titles[i] as NSString).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 0),
                                                               options: .usesLineFragmentOrigin,
                                                               attributes: [NSFontAttributeName: titleStyle.titleFont],
                                                               context: nil).width
                 if i == 0 {
-                    labelX = titleStyle.titleMargin * 0.5
+                    lbX = titleStyle.titleMargin * 0.5
                 } else {
                     let preLabel = titleLabels[i - 1]
-                    labelX = preLabel.frame.maxX + titleStyle.titleMargin
+                    lbX = preLabel.frame.maxX + titleStyle.titleMargin
                 }
             }
-            label.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
+            label.frame = CGRect(x: lbX, y: lbY, width: lbW, height: lbH)
             
             if titleStyle.isTitleScaling && i == 0 {
                 label.transform = CGAffineTransform(scaleX: titleStyle.scaleRange, y: titleStyle.scaleRange)
@@ -145,8 +136,8 @@ extension SRChannelsTitle {
     }
 }
 
+// MARK: - Fileprivate Methods
 extension SRChannelsTitle {
-    
     @objc fileprivate func didTapTitleLabel(_ tapGes : UITapGestureRecognizer) {
         guard let currentLabel = tapGes.view as? UILabel else {
             return
@@ -170,13 +161,13 @@ extension SRChannelsTitle {
         }
         
         if titleStyle.isSliderDisplayed {
-            var coverW: CGFloat = 0.0
+            var sliderW: CGFloat = 0.0
             if titleStyle.isScrollEnabled {
-                coverW = currentLabel.frame.width + titleStyle.titleMargin
+                sliderW = currentLabel.frame.width + titleStyle.titleMargin
             } else {
-                coverW = currentLabel.frame.width - 2 * titleStyle.sliderInset
+                sliderW = currentLabel.frame.width - 2 * titleStyle.sliderInset
             }
-            slider.frame.size.width = coverW
+            slider.frame.size.width = sliderW
             slider.center = currentLabel.center
         }
         
@@ -184,10 +175,25 @@ extension SRChannelsTitle {
         
         adjustPosition(currentLabel)
     }
+    
+    fileprivate func adjustPosition(_ newLabel: UILabel) {
+        guard titleStyle.isScrollEnabled else {
+            return
+        }
+        var offsetX = newLabel.center.x - scrollView.bounds.width * 0.5
+        if offsetX < 0 {
+            offsetX = 0
+        }
+        let maxOffset = scrollView.contentSize.width - bounds.width
+        if offsetX > maxOffset {
+            offsetX = maxOffset
+        }
+        scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
+    }
 }
 
+// MARK: - Public Methods
 extension SRChannelsTitle {
-    
     public func scroll(fromIndex: Int, toIndex: Int, progress: CGFloat) {
         let lastLabel = titleLabels[fromIndex]
         let toLabel = titleLabels[toIndex]
@@ -196,10 +202,10 @@ extension SRChannelsTitle {
         let deltaRGB = (selectedRGB.0 - normalRGB.0,
                         selectedRGB.1 - normalRGB.1,
                         selectedRGB.2 - normalRGB.2)
-        lastLabel.textColor = UIColor(colorWithR: selectedRGB.0 - deltaRGB.0 * progress,
+        lastLabel.textColor = UIColor(sr_colorWithR: selectedRGB.0 - deltaRGB.0 * progress,
                                       G: selectedRGB.1 - deltaRGB.1 * progress,
                                       B: selectedRGB.2 - deltaRGB.2 * progress)
-        toLabel.textColor = UIColor(colorWithR: normalRGB.0 + deltaRGB.0 * progress,
+        toLabel.textColor = UIColor(sr_colorWithR: normalRGB.0 + deltaRGB.0 * progress,
                                     G: normalRGB.1 + deltaRGB.1 * progress,
                                     B: normalRGB.2 + deltaRGB.2 * progress)
         
@@ -235,26 +241,11 @@ extension SRChannelsTitle {
     }
     
     public func didEndScrollAtIndex(atIndex: Int) {
+        currentIndex = atIndex
         let lastLabel = titleLabels[currentIndex]
         let atLabel = titleLabels[atIndex]
         lastLabel.textColor = titleStyle.titleNormalColor
         atLabel.textColor = titleStyle.titleSelectdColor
-        currentIndex = atIndex
         adjustPosition(atLabel)
-    }
-    
-    public func adjustPosition(_ newLabel: UILabel) {
-        guard titleStyle.isScrollEnabled else {
-            return
-        }
-        var offsetX = newLabel.center.x - scrollView.bounds.width * 0.5
-        if offsetX < 0 {
-            offsetX = 0
-        }
-        let maxOffset = scrollView.contentSize.width - bounds.width
-        if offsetX > maxOffset {
-            offsetX = maxOffset
-        }
-        scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
     }
 }

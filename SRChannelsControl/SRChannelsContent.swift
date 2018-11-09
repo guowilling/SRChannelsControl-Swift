@@ -1,22 +1,16 @@
-//
-//  SRChannelsContent.swift
-//  SRChannelsControlDemo
-//
-//  Created by https://github.com/guowilling on 2017/8/8.
-//  Copyright © 2017年 SR. All rights reserved.
-//
 
 import UIKit
 
-protocol SRChannelsContentDelegate : class {
+protocol SRChannelsContentDelegate: class {
     
     func channelsContent(_ channelsContent: SRChannelsContent, scrollFromIndex fromIndex: Int, toIndex:Int, progress: CGFloat)
+    
     func channelsContent(_ channelsContent: SRChannelsContent, didEndScrollAtIndex atIndex : Int)
 }
 
 fileprivate let kContentCellID = "kContentCellID"
 
-class SRChannelsContent: UIView {
+class SRChannelsContent : UIView {
     
     weak var delegate: SRChannelsContentDelegate?
     
@@ -32,21 +26,24 @@ class SRChannelsContent: UIView {
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
         layout.scrollDirection = .horizontal
-        let collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: layout)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: kContentCellID)
-        collectionView.isPagingEnabled = true
-        collectionView.scrollsToTop = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.bounces = false
-        return collectionView
+        
+        let cv = UICollectionView(frame: self.bounds, collectionViewLayout: layout)
+        cv.dataSource = self
+        cv.delegate = self
+        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: kContentCellID)
+        cv.isPagingEnabled = true
+        cv.scrollsToTop = false
+        cv.showsHorizontalScrollIndicator = false
+        cv.bounces = false
+        return cv
     }()
     
     init(frame: CGRect, childVCs: [UIViewController], parentVC: UIViewController) {
         self.childVCs = childVCs
         self.parentVC = parentVC
+        
         super.init(frame: frame)
+        
         setupUI()
     }
     
@@ -56,7 +53,6 @@ class SRChannelsContent: UIView {
 }
 
 extension SRChannelsContent {
-    
     fileprivate func setupUI() {
         for vc in childVCs {
             parentVC.addChildViewController(vc)
@@ -76,9 +72,9 @@ extension SRChannelsContent: UICollectionViewDataSource {
         for subview in cell.contentView.subviews {
             subview.removeFromSuperview()
         }
-        let childVC = childVCs[indexPath.item]
-        childVC.view.frame = cell.contentView.bounds
-        cell.contentView.addSubview(childVC.view)
+        let vc = childVCs[indexPath.item]
+        vc.view.frame = cell.contentView.bounds
+        cell.contentView.addSubview(vc.view)
         return cell
     }
 }
@@ -91,9 +87,6 @@ extension SRChannelsContent: UICollectionViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if disableScroll {
-            return
-        }
         let floorIndex = Int(floorf(Float(scrollView.contentOffset.x / scrollView.frame.size.width)))
         if floorIndex < 0 || floorIndex > childVCs.count - 1 {
             return;
@@ -128,7 +121,6 @@ extension SRChannelsContent: UICollectionViewDelegate {
 }
 
 extension SRChannelsContent {
-    
     fileprivate func collectionViewEndScroll() {
         let atIndex = Int(collectionView.contentOffset.x / collectionView.bounds.width)
         delegate?.channelsContent(self, didEndScrollAtIndex: atIndex)
@@ -136,7 +128,6 @@ extension SRChannelsContent {
 }
 
 extension SRChannelsContent {
-    
     public func didSelectIndex(index: Int) {
         disableScroll = true
         let indexPath = IndexPath(item: index, section: 0)

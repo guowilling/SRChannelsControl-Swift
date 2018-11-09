@@ -38,7 +38,7 @@ class TestViewController: UIViewController {
         var childVCs = [UIViewController]()
         for _ in 0..<titles.count {
             let vc = UIViewController()
-            vc.view.backgroundColor = UIColor.randomColor()
+            vc.view.backgroundColor = UIColor.sr_randomColor()
             childVCs.append(vc)
         }
         let channelsControl = SRChannelsControl(frame: pageViewFrame, titles: titles, titleStyle: titleStyle, childVCs: childVCs, parentVC: self)
