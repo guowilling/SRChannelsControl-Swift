@@ -45,6 +45,6 @@ class ViewController: UITableViewController {
             titleStyle.isSliderDisplayed = true
         default: break
         }
-        navigationController?.pushViewController(TestViewController.init(titleStyle: titleStyle), animated: true)
+        navigationController?.pushViewController(TestViewController(titleStyle: titleStyle), animated: true)
     }
 }

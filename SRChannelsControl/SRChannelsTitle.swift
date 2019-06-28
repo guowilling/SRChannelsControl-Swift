@@ -11,7 +11,7 @@ class SRChannelsTitle: UIView {
     
     public var titles: [String]
     public var titleStyle: SRChannelsTitleStyle
-    public var titleLabels: [UILabel] = [UILabel]()
+    public var titleLabels: [UILabel] = []
     public var currentIndex: Int = 0
     
     fileprivate lazy var scrollView: UIScrollView = {
@@ -84,10 +84,12 @@ extension SRChannelsTitle {
                 lbW = bounds.width / CGFloat(count)
                 lbX = lbW * CGFloat(i)
             } else {
-                lbW = (titles[i] as NSString).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 0),
-                                                              options: .usesLineFragmentOrigin,
-                                                              attributes: [NSFontAttributeName: titleStyle.titleFont],
-                                                              context: nil).width
+                lbW = (titles[i] as NSString).boundingRect(
+                    with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 0),
+                    options: .usesLineFragmentOrigin,
+                    attributes: [NSAttributedString.Key.font: titleStyle.titleFont],
+                    context: nil
+                    ).width
                 if i == 0 {
                     lbX = titleStyle.titleMargin * 0.5
                 } else {
@@ -177,14 +179,13 @@ extension SRChannelsTitle {
     }
     
     fileprivate func adjustPosition(_ newLabel: UILabel) {
-        guard titleStyle.isScrollEnabled else {
-            return
-        }
+        guard titleStyle.isScrollEnabled else { return }
+        let maxOffset = scrollView.contentSize.width - bounds.width
+        guard maxOffset > 0 else { return }
         var offsetX = newLabel.center.x - scrollView.bounds.width * 0.5
         if offsetX < 0 {
             offsetX = 0
         }
-        let maxOffset = scrollView.contentSize.width - bounds.width
         if offsetX > maxOffset {
             offsetX = maxOffset
         }
@@ -241,11 +242,11 @@ extension SRChannelsTitle {
     }
     
     public func didEndScrollAtIndex(atIndex: Int) {
-        currentIndex = atIndex
         let lastLabel = titleLabels[currentIndex]
         let atLabel = titleLabels[atIndex]
         lastLabel.textColor = titleStyle.titleNormalColor
         atLabel.textColor = titleStyle.titleSelectdColor
+        currentIndex = atIndex
         adjustPosition(atLabel)
     }
 }

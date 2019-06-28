@@ -6,10 +6,10 @@ class SRChannelsControl: UIView {
     fileprivate var titles: [String]
     fileprivate var titleStyle: SRChannelsTitleStyle
     fileprivate var childVCs: [UIViewController]
-    fileprivate var parentVC: UIViewController
+    fileprivate weak var parentVC: UIViewController?
     
-    fileprivate var channelsTitle: SRChannelsTitle!
-    fileprivate var channelsContent: SRChannelsContent!
+    var channelsTitle: SRChannelsTitle!
+    var channelsContent: SRChannelsContent!
     
     init(frame: CGRect, titles: [String], titleStyle: SRChannelsTitleStyle, childVCs: [UIViewController], parentVC: UIViewController) {
         self.titles = titles
@@ -25,6 +25,15 @@ class SRChannelsControl: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    var isContentScrollEnabled: Bool {
+        get {
+            return channelsContent.collectionView.isScrollEnabled
+        }
+        set {
+            channelsContent.collectionView.isScrollEnabled = newValue
+        }
+    }
 }
 
 extension SRChannelsControl {
@@ -35,7 +44,7 @@ extension SRChannelsControl {
         addSubview(channelsTitle)
         
         let contentFrame = CGRect(x: 0, y: titleFrame.maxY, width: bounds.width, height: frame.height - titleFrame.height)
-        channelsContent = SRChannelsContent(frame: contentFrame, childVCs: childVCs, parentVC: parentVC)
+        channelsContent = SRChannelsContent(frame: contentFrame, childVCs: childVCs, parentVC: parentVC!)
         channelsContent.delegate = self
         addSubview(channelsContent)
     }

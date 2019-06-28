@@ -4,7 +4,6 @@ import UIKit
 protocol SRChannelsContentDelegate: class {
     
     func channelsContent(_ channelsContent: SRChannelsContent, scrollFromIndex fromIndex: Int, toIndex:Int, progress: CGFloat)
-    
     func channelsContent(_ channelsContent: SRChannelsContent, didEndScrollAtIndex atIndex : Int)
 }
 
@@ -15,7 +14,7 @@ class SRChannelsContent : UIView {
     weak var delegate: SRChannelsContentDelegate?
     
     fileprivate var childVCs: [UIViewController]
-    fileprivate var parentVC: UIViewController
+    fileprivate weak var parentVC: UIViewController?
     fileprivate var startOffsetX: CGFloat = 0
     
     public lazy var disableScroll: Bool = false
@@ -55,7 +54,7 @@ class SRChannelsContent : UIView {
 extension SRChannelsContent {
     fileprivate func setupUI() {
         for vc in childVCs {
-            parentVC.addChildViewController(vc)
+            parentVC!.addChild(vc)
         }
         addSubview(collectionView)
     }

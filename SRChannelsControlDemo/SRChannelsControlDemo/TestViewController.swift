@@ -8,6 +8,17 @@
 
 import UIKit
 
+public let SR_SCREEN_W: CGFloat = UIScreen.main.bounds.size.width
+public let SR_SCREEN_H: CGFloat = UIScreen.main.bounds.size.height
+
+public var SR_isIPhoneXSeries: Bool {
+    return SR_SCREEN_H >= 812
+}
+
+public var SR_NAVGATION_H: CGFloat {
+    return SR_isIPhoneXSeries ? 88 : 64
+}
+
 class TestViewController: UIViewController {
 
     fileprivate var titleStyle: SRChannelsTitleStyle
@@ -34,7 +45,7 @@ class TestViewController: UIViewController {
         } else {
             titles = ["Title1", "Title2", "Title3", "Title4", "Title5"]
         }
-        let pageViewFrame = CGRect(x: 0, y: 64, width: view.bounds.width, height: view.bounds.height - 64)
+        let pageViewFrame = CGRect(x: 0, y: SR_NAVGATION_H, width: view.bounds.width, height: view.bounds.height - SR_NAVGATION_H)
         var childVCs = [UIViewController]()
         for _ in 0..<titles.count {
             let vc = UIViewController()
