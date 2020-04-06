@@ -1,3 +1,9 @@
+//
+//  SRChannelsControl.h
+//
+//  Created by https://github.com/guowilling on 2017/8/16.
+//  Copyright © 2017年 SR. All rights reserved.
+//
 
 import UIKit
 
@@ -7,7 +13,7 @@ protocol SRChannelsContentDelegate: class {
     func channelsContent(_ channelsContent: SRChannelsContent, didEndScrollAtIndex atIndex : Int)
 }
 
-fileprivate let kContentCellID = "kContentCellID"
+fileprivate let kContentCellID = "SRChannelsContentCellID"
 
 class SRChannelsContent : UIView {
     

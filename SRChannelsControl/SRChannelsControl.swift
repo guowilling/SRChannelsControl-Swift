@@ -1,12 +1,28 @@
+//
+//  SRChannelsControl.h
+//
+//  Created by https://github.com/guowilling on 2017/8/16.
+//  Copyright © 2017年 SR. All rights reserved.
+//
 
 import UIKit
 
-class SRChannelsControl: UIView {
+public protocol SRChannelsControlDelegate: class {
+    func channelsControl(_ ctrl: SRChannelsControl, didEndScrollAtIndex atIndex: Int)
+    func channelsControl(_ ctrl: SRChannelsControl, didSelectIndex index: Int)
+}
+
+extension SRChannelsControlDelegate {
+    func channelsControl(_ ctrl: SRChannelsControl, didEndScrollAtIndex atIndex: Int) { }
+    func channelsControl(_ ctrl: SRChannelsControl, didSelectIndex index: Int) { }
+}
+
+public class SRChannelsControl: UIView {
     
-    fileprivate var titles: [String]
-    fileprivate var titleStyle: SRChannelsTitleStyle
-    fileprivate var childVCs: [UIViewController]
-    fileprivate weak var parentVC: UIViewController?
+    private var titles: [String]
+    private var titleStyle: SRChannelsTitleStyle
+    private var childVCs: [UIViewController]
+    private weak var parentVC: UIViewController?
     
     var channelsTitle: SRChannelsTitle!
     var channelsContent: SRChannelsContent!
@@ -26,18 +42,14 @@ class SRChannelsControl: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    weak var delegate: SRChannelsControlDelegate?
+    
     var isContentScrollEnabled: Bool {
-        get {
-            return channelsContent.collectionView.isScrollEnabled
-        }
-        set {
-            channelsContent.collectionView.isScrollEnabled = newValue
-        }
+        get { return channelsContent.collectionView.isScrollEnabled }
+        set { channelsContent.collectionView.isScrollEnabled = newValue }
     }
-}
-
-extension SRChannelsControl {
-    fileprivate func setupUI() {
+    
+    private func setupUI() {
         let titleFrame = CGRect(x: 0, y: 0, width: bounds.width, height: titleStyle.titleHeight)
         channelsTitle = SRChannelsTitle(frame: titleFrame, titles: titles, titleStyle: titleStyle)
         channelsTitle.delegate = self
@@ -51,17 +63,21 @@ extension SRChannelsControl {
 }
 
 extension SRChannelsControl: SRChannelsContentDelegate {
+    
     func channelsContent(_ channelsContent: SRChannelsContent, scrollFromIndex fromIndex: Int, toIndex: Int, progress: CGFloat) {
         channelsTitle.scroll(fromIndex: fromIndex, toIndex: toIndex, progress: progress)
     }
     
     func channelsContent(_ channelsContent: SRChannelsContent, didEndScrollAtIndex atIndex: Int) {
         channelsTitle.didEndScrollAtIndex(atIndex: atIndex)
+        delegate?.channelsControl(self, didEndScrollAtIndex: atIndex)
     }
 }
 
 extension SRChannelsControl: SRChannelsTitleDeleate {
+    
     func channelsTitle(_ channelsTitle: SRChannelsTitle, didSelectIndex index: Int) {
         channelsContent.didSelectIndex(index: index)
+        delegate?.channelsControl(self, didSelectIndex: index)
     }
 }

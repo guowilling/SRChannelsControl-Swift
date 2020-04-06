@@ -1,3 +1,9 @@
+//
+//  SRChannelsControl.h
+//
+//  Created by https://github.com/guowilling on 2017/8/16.
+//  Copyright © 2017年 SR. All rights reserved.
+//
 
 import UIKit
 
@@ -14,7 +20,7 @@ class SRChannelsTitle: UIView {
     public var titleLabels: [UILabel] = []
     public var currentIndex: Int = 0
     
-    fileprivate lazy var scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let sv = UIScrollView(frame: self.bounds)
         sv.showsHorizontalScrollIndicator = false
         sv.scrollsToTop = false
@@ -22,17 +28,18 @@ class SRChannelsTitle: UIView {
     }()
     
     public lazy var bottomLine: UIView = {
-        let v = UIView()
-        v.backgroundColor = self.titleStyle.bottomLineColor
-        v.frame.size.height = self.titleStyle.bottomLineHeight
-        return v
+        let line = UIView()
+        line.backgroundColor = self.titleStyle.bottomLineColor
+        line.frame.origin.y = self.bounds.height - titleStyle.bottomLineHeight - 2
+        line.frame.size.height = self.titleStyle.bottomLineHeight
+        return line
     }()
     
     public lazy var slider: UIView = {
-        let v = UIView()
-        v.backgroundColor = self.titleStyle.sliderColor
-        v.alpha = self.titleStyle.sliderAlpha
-        return v
+        let slider = UIView()
+        slider.backgroundColor = self.titleStyle.sliderColor
+        slider.alpha = self.titleStyle.sliderAlpha
+        return slider
     }()
     
     init(frame: CGRect, titles: [String], titleStyle: SRChannelsTitleStyle) {
@@ -51,7 +58,7 @@ class SRChannelsTitle: UIView {
 
 extension SRChannelsTitle {
     
-    fileprivate func setupUI() {
+    private func setupUI() {
         backgroundColor = UIColor.white
         addSubview(scrollView)
         setupTitleLabels()
@@ -91,7 +98,7 @@ extension SRChannelsTitle {
                     context: nil
                     ).width
                 if i == 0 {
-                    lbX = titleStyle.titleMargin * 0.5
+                    lbX = titleStyle.titleMargin * 1.25
                 } else {
                     let preLabel = titleLabels[i - 1]
                     lbX = preLabel.frame.maxX + titleStyle.titleMargin
@@ -105,7 +112,7 @@ extension SRChannelsTitle {
         }
         
         if titleStyle.isScrollEnabled {
-            scrollView.contentSize.width = titleLabels.last!.frame.maxX + titleStyle.titleMargin * 0.5
+            scrollView.contentSize.width = titleLabels.last!.frame.maxX + titleStyle.titleMargin * 1.25
         }
     }
     
@@ -113,9 +120,15 @@ extension SRChannelsTitle {
         guard titleStyle.isBottomLineDisplayed else {
             return
         }
-        bottomLine.frame.origin.x = titleLabels.first!.frame.origin.x
-        bottomLine.frame.origin.y = bounds.height - titleStyle.bottomLineHeight
-        bottomLine.frame.size.width = titleLabels.first!.bounds.width
+        if titleStyle.isFixedBottomLineWidth {
+            bottomLine.frame.origin.x = titleLabels.first!.center.x - 15.auto() * 0.5
+            bottomLine.frame.size.width = 15.auto()
+            bottomLine.layer.cornerRadius = 1.5
+            bottomLine.layer.masksToBounds = true
+        } else {
+            bottomLine.frame.origin.x = titleLabels.first!.frame.origin.x
+            bottomLine.frame.size.width = titleLabels.first!.bounds.width
+        }
         scrollView.addSubview(bottomLine)
     }
     
@@ -138,9 +151,9 @@ extension SRChannelsTitle {
     }
 }
 
-// MARK: - Fileprivate Methods
 extension SRChannelsTitle {
-    @objc fileprivate func didTapTitleLabel(_ tapGes : UITapGestureRecognizer) {
+    // MARK: - Private Methods
+    @objc private func didTapTitleLabel(_ tapGes : UITapGestureRecognizer) {
         guard let currentLabel = tapGes.view as? UILabel else {
             return
         }
@@ -153,8 +166,13 @@ extension SRChannelsTitle {
         currentIndex = currentLabel.tag
         
         if titleStyle.isBottomLineDisplayed {
-            bottomLine.frame.origin.x = currentLabel.frame.origin.x
-            bottomLine.frame.size.width = currentLabel.frame.width
+            if titleStyle.isFixedBottomLineWidth {
+                bottomLine.frame.origin.x = currentLabel.center.x - 15.auto() * 0.5
+                bottomLine.frame.size.width = 15.auto()
+            } else {
+                bottomLine.frame.origin.x = currentLabel.frame.origin.x
+                bottomLine.frame.size.width = currentLabel.frame.width
+            }
         }
         
         if titleStyle.isTitleScaling {
@@ -178,7 +196,7 @@ extension SRChannelsTitle {
         adjustPosition(currentLabel)
     }
     
-    fileprivate func adjustPosition(_ newLabel: UILabel) {
+    private func adjustPosition(_ newLabel: UILabel) {
         guard titleStyle.isScrollEnabled else { return }
         let maxOffset = scrollView.contentSize.width - bounds.width
         guard maxOffset > 0 else { return }
@@ -193,8 +211,8 @@ extension SRChannelsTitle {
     }
 }
 
-// MARK: - Public Methods
 extension SRChannelsTitle {
+    // MARK: - Public Methods
     public func scroll(fromIndex: Int, toIndex: Int, progress: CGFloat) {
         let lastLabel = titleLabels[fromIndex]
         let toLabel = titleLabels[toIndex]
@@ -211,10 +229,17 @@ extension SRChannelsTitle {
                                     B: normalRGB.2 + deltaRGB.2 * progress)
         
         if titleStyle.isBottomLineDisplayed {
-            let deltaX = toLabel.frame.origin.x - lastLabel.frame.origin.x
-            let deltaW = toLabel.frame.width - lastLabel.frame.width
-            bottomLine.frame.origin.x = lastLabel.frame.origin.x + deltaX * progress
-            bottomLine.frame.size.width = lastLabel.frame.width + deltaW * progress
+            if titleStyle.isFixedBottomLineWidth {
+                let toLabelX = toLabel.center.x - 15.auto() * 0.5
+                let lastLabelX = lastLabel.center.x - 15.auto() * 0.5
+                let deltaX = toLabelX - lastLabelX
+                bottomLine.frame.origin.x = lastLabelX + deltaX * progress
+            } else {
+                let deltaX = toLabel.frame.origin.x - lastLabel.frame.origin.x
+                let deltaW = toLabel.frame.width - lastLabel.frame.width
+                bottomLine.frame.origin.x = lastLabel.frame.origin.x + deltaX * progress
+                bottomLine.frame.size.width = lastLabel.frame.width + deltaW * progress
+            }
         }
         
         if titleStyle.isTitleScaling {
@@ -242,9 +267,11 @@ extension SRChannelsTitle {
     }
     
     public func didEndScrollAtIndex(atIndex: Int) {
+        guard atIndex != currentIndex else { return }
         let lastLabel = titleLabels[currentIndex]
         let atLabel = titleLabels[atIndex]
         lastLabel.textColor = titleStyle.titleNormalColor
+        lastLabel.transform = .identity
         atLabel.textColor = titleStyle.titleSelectdColor
         currentIndex = atIndex
         adjustPosition(atLabel)

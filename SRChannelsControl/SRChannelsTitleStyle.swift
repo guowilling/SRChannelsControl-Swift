@@ -1,3 +1,9 @@
+//
+//  SRChannelsControl.h
+//
+//  Created by https://github.com/guowilling on 2017/8/16.
+//  Copyright © 2017年 SR. All rights reserved.
+//
 
 import UIKit
 
@@ -15,8 +21,9 @@ class SRChannelsTitleStyle {
     var scaleRange: CGFloat = 1.2
     
     var isBottomLineDisplayed: Bool = false
-    var bottomLineColor: UIColor = UIColor.orange
+    var bottomLineColor: UIColor = UIColor.blue
     var bottomLineHeight: CGFloat = 2
+    var isFixedBottomLineWidth: Bool = false
     
     var isSliderDisplayed: Bool = false
     var sliderColor: UIColor = UIColor.black
